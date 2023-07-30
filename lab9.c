@@ -100,6 +100,15 @@ void displayRecordsInHash(struct HashType *pHashArray, int hashSz)
 	}
 }
 
+void createEntry(struct RecordType *pRecords, struct HashType* Table, int index, int i) {
+    	struct HashEntry* newEntry = malloc(sizeof(struct HashEntry));
+	    if (newEntry == NULL)
+	        exit(-1);
+	    newEntry->next = Table[index].head;
+	    Table[index].head = newEntry;
+	    newEntry->record = pRecords[i];
+}
+
 int main(void)
 {
 	struct RecordType *pRecords;
@@ -116,12 +125,7 @@ int main(void)
 	    
 	for(int i = 0; i < recordSz; i++) {
 	    int index = hash(pRecords[i].order, 15);
-	    struct HashEntry* newEntry = malloc(sizeof(struct HashEntry));
-	    if (newEntry == NULL)
-	        exit(0);
-	    newEntry->next = Table[index].head;
-	    Table[index].head = newEntry;
-	    newEntry->record = pRecords[i];
+        createEntry(pRecords, Table, index, i);
 	}
 	
 	displayRecordsInHash(Table, 15);
